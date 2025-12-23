@@ -1,4 +1,4 @@
-# 📚 Estudos de Estrutura de Dados e Algoritmos em C#
+# Estrutura de Dados e Algoritmos em C#
 
 Este repositório documenta minha jornada de aprendizado em Estruturas de Dados, focando não apenas na sintaxe do C#, mas na engenharia de software e análise de complexidade (Big O Notation).
 
