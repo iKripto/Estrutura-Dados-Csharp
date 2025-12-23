@@ -60,3 +60,61 @@ public void ExemploArray()
         }
     }
 }
+```
+
+---
+
+## 3. Listas Dinâmicas (`List<T>`)
+
+Diferente dos Arrays, a `List<T>` no C# é dinâmica. Ela resolve o problema do tamanho fixo, mas introduz custos de processamento ocultos.
+
+### Como funciona (Under the Hood)
+Por baixo dos panos, a Lista **usa um Array**. Quando esse array interno fica cheio e você tenta adicionar um novo item, a Lista cria automaticamente um novo array com o **dobro do tamanho**, copia os itens antigos e descarta o array anterior.
+
+### Características
+* **Tamanho Dinâmico:** Cresce conforme a necessidade.
+* **Contíguo (Geralmente):** Mantém a performance de acesso rápido do Array.
+* **Custo de Deslocamento (Shift):** Inserir ou remover itens no *meio* da lista obriga o deslocamento de todos os elementos subsequentes na memória.
+
+### Análise de Performance
+
+| Operação | Complexidade | Explicação |
+| :--- | :---: | :--- |
+| **Acesso (Index)** | **$O(1)$** | Igual ao Array. Acesso direto ao endereço de memória. |
+| **Adicionar (Add)** | **$O(1)$*** | Rápido, pois adiciona no primeiro espaço vazio ao final. (*Pode ser $O(n)$ se precisar redimensionar a capacidade interna*). |
+| **Inserir (Insert)** | **$O(n)$** | Lento. Obriga o deslocamento (shift) de todos os elementos à direita para abrir espaço. |
+| **Remover (Remove)** | **$O(n)$** | Lento. Obriga o deslocamento de todos os elementos para preencher o "buraco". |
+| **Busca (Find)** | **$O(n)$** | Percorre a lista linearmente até encontrar o item. |
+
+### Exemplo em C#
+
+```csharp
+public void ExemploLista()
+{
+    // Declaração: Não precisa definir tamanho inicial
+    List<string> inventario = new List<string>();
+
+    // 1. Adicionar ao Final - O(1) (Amortizado)
+    inventario.Add("Espada");
+    inventario.Add("Escudo");
+    inventario.Add("Poção");
+
+    // 2. Inserir no Meio - O(n)
+    // CUSTOSO: O C# precisa mover "Escudo" e "Poção" para a direita
+    // para encaixar o "Mapa" no índice 1.
+    inventario.Insert(1, "Mapa"); 
+
+    // 3. Remover - O(n)
+    // CUSTOSO: Ao remover o índice 0 ("Espada"), todos os itens 
+    // seguintes voltam uma casa para a esquerda.
+    inventario.RemoveAt(0);
+
+    // 4. Acesso Direto - O(1)
+    string itemAtual = inventario[1];
+    
+    // Curiosidade: Capacidade vs Contagem
+    // Count: Quantos itens existem (3)
+    // Capacity: Tamanho real do array interno reservado (pode ser 4, 8, etc)
+    Console.WriteLine($"Itens: {inventario.Count} / Capacidade: {inventario.Capacity}");
+}
+```
